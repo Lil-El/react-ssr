@@ -1,19 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Counter from "../container/Counter";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import routes from "../routes";
 import Header from "../components/Header";
-
+import { Provider } from "react-redux";
+import { getClientStore } from "../store";
 ReactDOM.hydrate(
-  <BrowserRouter>
-    <>
-      <Header />
-      <div className="container" style={{ marginTop: "70px" }}>
-        {routes}
-      </div>
-    </>
-  </BrowserRouter>,
+  <Provider store={getClientStore()}>
+    <BrowserRouter>
+      <>
+        <Header />
+        <div className="container" style={{ marginTop: "70px" }}>
+          {routes.map(route => (
+            <Route {...route} />
+          ))}
+        </div>
+      </>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );
 // 由于在server.js中，#root已经有了内容，使用render，使其重新渲染了，发生警告，并在react v17.0中进行修改；

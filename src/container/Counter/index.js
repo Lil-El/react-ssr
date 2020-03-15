@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import actions from "../../store/actions/counter";
 
-export default class Home extends Component {
+class Counter extends Component {
   //es7高级语法,绑定在原型上
   state = {
     number: 0
@@ -8,13 +10,10 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        <p>{this.state.number}</p>
-        <button
-          onClick={() => this.setState({ number: this.state.number + 1 })}
-        >
-          +
-        </button>
+        <p>{this.props.number}</p>
+        <button onClick={this.props.increment}>+</button>
       </div>
     );
   }
 }
+export default connect(state => state.counter, actions)(Counter);
