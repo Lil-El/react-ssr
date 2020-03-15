@@ -6,18 +6,12 @@ import routes from "../routes";
 import Header from "../components/Header";
 import { Provider } from "react-redux";
 import { getClientStore } from "../store";
+// renderRoutes渲染多级路由
+// matchRoutes匹配路由
+import { renderRoutes, matchRoutes } from "react-router-config";
 ReactDOM.hydrate(
   <Provider store={getClientStore()}>
-    <BrowserRouter>
-      <>
-        <Header />
-        <div className="container" style={{ marginTop: "70px" }}>
-          {routes.map(route => (
-            <Route {...route} />
-          ))}
-        </div>
-      </>
-    </BrowserRouter>
+    <BrowserRouter>{renderRoutes(routes)}</BrowserRouter>
   </Provider>,
   document.getElementById("root")
 );

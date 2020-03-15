@@ -17,6 +17,15 @@ export default class Header extends Component {
               <li>
                 <Link to="/counter">计数器</Link>
               </li>
+              <li>
+                <Link to="/login">登录</Link>
+              </li>
+              <li>
+                <Link to="/logout">退出</Link>
+              </li>
+              <li>
+                <Link to="/profile">个人中心</Link>
+              </li>
             </ul>
           </div>
         </div>

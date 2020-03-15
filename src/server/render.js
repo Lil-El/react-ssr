@@ -1,12 +1,10 @@
 import React from "react";
-import Home from "../container/Home";
-import Counter from "../container/Counter";
 import { renderToString } from "react-dom/server";
 import { StaticRouter, matchPath, Route } from "react-router-dom";
 import routes from "../routes";
-import Header from "../components/Header";
 import { Provider } from "react-redux";
 import { getServerStore } from "../store";
+import { renderRoutes, matchRoutes } from "react-router-config";
 export default function(req, res) {
   // let html = renderToString(<Home />);
   // let counter = renderToString(<Counter />);
@@ -14,25 +12,20 @@ export default function(req, res) {
   let context = {};
   let store = getServerStore();
   //判断路由对象和请求路径是否匹配
-  let matchRoute = routes.filter(route => matchPath(req.path, route));
+  // let matchedRoutes = routes.filter(route => matchPath(req.path, route)); // 只有一层路由时，使用这个（即没有components属性）
+  let matchedRoutes = matchRoutes(routes, req.path); //可以处理嵌套路由
   let promise = [];
-  matchRoute.forEach(route => {
-    if (route.loadData) {
-      promise.push(route.loadData(store));
+
+  matchedRoutes.forEach(item => {
+    if (item.route.loadData) {
+      promise.push(item.route.loadData(store));
     }
   });
   Promise.all(promise).then(function() {
-    let route = renderToString(
+    let html = renderToString(
       <Provider store={store}>
         <StaticRouter context={context} location={req.path}>
-          <>
-            <Header />
-            <div className="container" style={{ marginTop: "70px" }}>
-              {routes.map(route => (
-                <Route {...route} />
-              ))}
-            </div>
-          </>
+          {renderRoutes(routes)}
         </StaticRouter>
       </Provider>
     );
@@ -46,7 +39,7 @@ export default function(req, res) {
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" />
       </head>
       <body>
-        <div id="root">${route}</div>
+        <div id="root">${html}</div>
         <!-- <div id="title">'$html'</div> -->
         <script>
           window.context = {

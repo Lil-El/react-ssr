@@ -14,3 +14,7 @@
   `webpack 默认将所有引入的模块进行打包，包含 fs 等；WebpackNodeExternals 将 node 的核心模块（path，fs 等）不会进行打包处理`
 
   `用于排除 node_modules 目录下的代码被打包进去，因为放在 node_modules 目录下的代码应该通过 npm 安装`
+
+- react-router-config
+
+  `处理多路由，即components`

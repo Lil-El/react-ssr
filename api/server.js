@@ -1,17 +1,56 @@
 let express = require("express");
-let cors = require("cors");
-
+let bodyParser = require("body-parser");
+let session = require("express-session");
 let app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 let users = [
   { id: 1, name: "yxd" },
   { id: 2, name: "yhc" }
 ];
-app.use(
-  cors({
-    origin: "http://127.0.0.1:3000"
-  })
-);
+
 app.get("/api/users", function(req, res) {
   res.json(users);
+});
+app.get("/login", function(req, res) {
+  let user = req.body;
+  req.session.user = user;
+  res.json({
+    code: 0,
+    data: {
+      user,
+      success: "success"
+    }
+  });
+});
+app.get("/logout", function(req, res) {
+  req.session.user = null;
+  res.json({
+    code: 0,
+    data: {
+      user,
+      success: "logout success"
+    }
+  });
+});
+app.get("/api/user", function(req, res) {
+  let user = req.session.user;
+  if (user) {
+    res.json({
+      code: 0,
+      data: {
+        user,
+        success: "get success"
+      }
+    });
+  } else {
+    res.json({
+      code: 1,
+      data: {
+        user,
+        success: "not login"
+      }
+    });
+  }
 });
 app.listen(4000);
