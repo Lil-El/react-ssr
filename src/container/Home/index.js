@@ -6,7 +6,6 @@ class Home extends Component {
   componentWillMount() {
     //会渲染两次，服务端一次，客户端一次
     if (this.props.list.length == 0) {
-      console.log("Home 请求");
       //有了后不需要再次获取，但是浏览器仍然请求了接口
       //是因为clientStore和serverStore不同，需要将serverStore复制到clientStore
       this.props.getHomeList();

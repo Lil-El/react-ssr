@@ -4,6 +4,13 @@ let session = require("express-session");
 let app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(
+  session({
+    saveUninitialized: true,
+    resave: true,
+    secret: "yxd"
+  })
+);
 let users = [
   { id: 1, name: "yxd" },
   { id: 2, name: "yhc" }
@@ -12,7 +19,7 @@ let users = [
 app.get("/api/users", function(req, res) {
   res.json(users);
 });
-app.get("/login", function(req, res) {
+app.post("/api/login", function(req, res) {
   let user = req.body;
   req.session.user = user;
   res.json({
@@ -23,12 +30,11 @@ app.get("/login", function(req, res) {
     }
   });
 });
-app.get("/logout", function(req, res) {
+app.get("/api/logout", function(req, res) {
   req.session.user = null;
   res.json({
     code: 0,
     data: {
-      user,
       success: "logout success"
     }
   });
@@ -48,7 +54,7 @@ app.get("/api/user", function(req, res) {
       code: 1,
       data: {
         user,
-        success: "not login"
+        error: "not login"
       }
     });
   }

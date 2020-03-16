@@ -6,11 +6,13 @@ import App from "./container/App";
 import Login from "./container/Login";
 import Logout from "./container/Logout";
 import Profile from "./container/Profile";
+import NotFound from "./container/NotFound";
 export default [
   {
     path: "/",
     component: App,
-    components: [
+    loadData: App.loadData,
+    routes: [
       {
         path: "/",
         component: Home,
@@ -37,6 +39,10 @@ export default [
         path: "/logout",
         key: "/logout",
         component: Logout
+      },
+      {
+        key: "notFound",
+        component: NotFound
       }
     ]
   }
